@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">EasyRestro</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_title">Menu</string>
+    <string name="add_category_title">Add Category</string>
+    <string name="add_item_title">Add Item</string>
 </resources>

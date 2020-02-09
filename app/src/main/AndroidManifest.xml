@@ -9,6 +9,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AddItem"
+            android:label="@string/add_item_title"
+            android:parentActivityName=".SettingActivity"></activity>
+        <activity android:name=".AddCategory"
+            android:label="@string/add_category_title"
+            android:parentActivityName=".SettingActivity"></activity>
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/menu_title"
+            android:parentActivityName=".SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.SettingActivity" />
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.MainActivity" />
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
