@@ -4,4 +4,6 @@
     <string name="menu_title">Menu</string>
     <string name="add_category_title">Add Category</string>
     <string name="add_item_title">Add Item</string>
+    <string name="add_table">Add Table</string>
+    <string name="order_name">Order</string>
 </resources>

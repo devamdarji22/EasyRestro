@@ -41,4 +41,15 @@
         android:textColor="@color/colorPrimary"
         android:textSize="35dp" />
 
+    <TextView
+        android:id="@+id/addTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Add Table"
+        android:textColor="@color/colorPrimary"
+        android:textSize="35dp" />
+
 </LinearLayout>

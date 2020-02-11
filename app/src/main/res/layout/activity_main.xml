@@ -28,6 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:tint="#FFFFFF"
+        app:backgroundTint="#000000"
+        app:borderWidth="1dp"
+        app:elevation="15dp"
+        app:fabSize="auto"
+        app:hoveredFocusedTranslationZ="15dp"
+        app:maxImageSize="50dp"
+        app:pressedTranslationZ="15dp"
+        android:src="@drawable/ic_add_circle_black_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
