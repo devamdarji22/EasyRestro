@@ -21,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import javax.xml.validation.Validator;
+
 public class AddItem extends AppCompatActivity {
 
     EditText itemName,itemPrice;
@@ -30,12 +32,15 @@ public class AddItem extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> list;
     DatabaseReference databaseReference,databaseItem;
+    long maxId= 0;
+
+    Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
-        databaseReference = FirebaseDatabase.getInstance().getReference("category");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Category");
 
         itemName = findViewById(R.id.item_name_edit_text);
         itemPrice = findViewById(R.id.item_price_edit_text);
@@ -46,7 +51,8 @@ public class AddItem extends AppCompatActivity {
 
         retrievedata();
 
-        databaseItem = FirebaseDatabase.getInstance().getReference("item");
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,20 +65,27 @@ public class AddItem extends AppCompatActivity {
 
     private void addItem() {
         String item = itemName.getText().toString().trim();
-        int price = Integer.parseInt(itemPrice.getText().toString().trim());
-        String category = spinner.getSelectedItem().toString();
 
-        if(!TextUtils.isEmpty(item)){
-            String id = databaseReference.push().getKey();
-            Item item1 = new Item(item,category,price);
-            databaseItem.child(id).setValue(item1);
+
+
+
+
+
+        if(!itemName.getText().toString().equals("") && !itemPrice.getText().toString().equals("")){
+            //String id = databaseReference.push().getKey();
+            int price = Integer.parseInt(itemPrice.getText().toString().trim());
+            String category = spinner.getSelectedItem().toString();
+            databaseItem = databaseReference.child(category).child("Items");
+            Item item1 = new Item(item,price,maxId+1);
+            databaseItem.child(item).setValue(item1);
+            itemName.setText("");
+            itemPrice.setText("");
             Toast.makeText(this, "Item added!", Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(this,"Item not addded!",Toast.LENGTH_SHORT).show();
         }
-        itemName.setText("");
-        itemPrice.setText("");
+
     }
 
     public void retrievedata(){
@@ -81,8 +94,8 @@ public class AddItem extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list.clear();
                 for(DataSnapshot item: dataSnapshot.getChildren()){
-                    Category category = item.getValue(Category.class);
-                    list.add(category.getName());
+                    //Category category = item.getKey();
+                    list.add(item.getKey());
 
                 }
                 adapter = new ArrayAdapter<>(AddItem.this,android.R.layout.select_dialog_item,list);

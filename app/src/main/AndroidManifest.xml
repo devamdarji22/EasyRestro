@@ -9,9 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddTable"
+        <activity android:name=".CartAddItemActivity"
+            android:label="@string/add_item_title"
+            android:parentActivityName=".OrderActivity"></activity>
+        <activity
+            android:name=".AddTable"
             android:label="@string/add_table"
-            android:parentActivityName=".SettingActivity"></activity>
+            android:parentActivityName=".SettingActivity" />
         <activity
             android:name=".OrderActivity"
             android:label="@string/order_name"

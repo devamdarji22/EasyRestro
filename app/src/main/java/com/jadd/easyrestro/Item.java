@@ -3,8 +3,14 @@ package com.jadd.easyrestro;
 public class Item {
 
     String name;
-    String category;
-    int price;
+    long price;
+    long id;
+
+    public Item(String name, long price, long id) {
+        this.name = name;
+        this.price = price;
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -14,15 +20,7 @@ public class Item {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
@@ -30,9 +28,11 @@ public class Item {
         this.price = price;
     }
 
-    public Item(String name, String category, int price) {
-        this.name = name;
-        this.category = category;
-        this.price = price;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

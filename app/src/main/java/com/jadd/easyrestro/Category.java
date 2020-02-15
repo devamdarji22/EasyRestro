@@ -3,13 +3,23 @@ package com.jadd.easyrestro;
 public class Category {
 
     String name;
+    long id;
 
-    public Category(String name) {
-        this.name = name;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Category(){
 
+    }
+
+    public Category(String name, long id) {
+        this.name = name;
+        this.id = id;
     }
 
     public String getName() {
