@@ -9,25 +9,55 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CartAddItemActivity"
+        <activity android:name=".NewOrderActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/new_order_title"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.MainActivity" />
+        </activity>
+        <activity
+            android:name=".CartAddItemActivity"
             android:label="@string/add_item_title"
-            android:parentActivityName=".OrderActivity"></activity>
+            android:parentActivityName=".OrderActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.jadd.easyrestro.OrderActivity" />
+        </activity>
         <activity
             android:name=".AddTable"
             android:label="@string/add_table"
-            android:parentActivityName=".SettingActivity" />
+            android:parentActivityName=".SettingActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.jadd.easyrestro.SettingActivity" />
+        </activity>
         <activity
             android:name=".OrderActivity"
             android:label="@string/order_name"
-            android:parentActivityName=".MainActivity" />
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.jadd.easyrestro.MainActivity" />
+        </activity>
         <activity
             android:name=".AddItem"
             android:label="@string/add_item_title"
-            android:parentActivityName=".SettingActivity" />
+            android:parentActivityName=".SettingActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.jadd.easyrestro.SettingActivity" />
+        </activity>
         <activity
             android:name=".AddCategory"
             android:label="@string/add_category_title"
-            android:parentActivityName=".SettingActivity" />
+            android:parentActivityName=".SettingActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.jadd.easyrestro.SettingActivity" />
+        </activity>
         <activity
             android:name=".MenuActivity"
             android:label="@string/menu_title"

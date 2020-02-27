@@ -21,46 +21,7 @@
             android:orientation="vertical">
 
 
-            <EditText
-                android:id="@+id/order_name_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="0dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"
-                android:textAlignment="center" />
 
-            <EditText
-                android:id="@+id/order_phone_number_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="0dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Phone Number"
-                android:inputType="phone"
-                android:textAlignment="center" />
-
-            <Spinner
-                android:id="@+id/order_table_number_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="0dp"
-                android:layout_weight="1"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:spinnerMode="dropdown" />
 
             <LinearLayout
                 android:id="@+id/order_cart"

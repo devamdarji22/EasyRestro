@@ -19,19 +19,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     Context mConext;
     ArrayList<Cart> items;
     String category;
+    OnQuanListner onQuanListner;
 
-    public RecyclerViewAdapter(Context mConext, ArrayList<Cart> items, String category) {
+    public RecyclerViewAdapter(Context mConext, ArrayList<Cart> items, String category, OnQuanListner onQuanListner) {
         this.mConext = mConext;
         this.items = items;
         this.category = category;
+        this.onQuanListner = onQuanListner;
     }
+
+
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(mConext).inflate(R.layout.cart_item,parent,false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view,onQuanListner);
         return viewHolder;
     }
 
@@ -41,8 +45,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemName.setText(name);
         long price = items.get(position).getItem().getPrice();
         holder.itemPrice.setText(String.valueOf(price));
-        String quan = String.valueOf(items.get(position).getQuantity());
-        holder.itemQuantity.setNumber(quan);
+        
+        //String quan = String.valueOf(items.get(position).getQuantity());
+        //holder.itemQuantity.setNumber(quan);
     }
 
     @Override
@@ -50,19 +55,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements ElegantNumberButton.OnValueChangeListener {
 
         TextView itemName,itemPrice;
         ElegantNumberButton itemQuantity;
+        OnQuanListner onQuanListner;
+        int quan;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView,OnQuanListner onQuanListner) {
             super(itemView);
 
             itemName = itemView.findViewById(R.id.item_name);
             itemPrice = itemView.findViewById(R.id.item_price);
             itemQuantity = itemView.findViewById(R.id.item_quantity);
+            this.onQuanListner = onQuanListner;
+            itemQuantity.setOnValueChangeListener(this);
+
 
         }
+
+
+
+        @Override
+        public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+            quan = Integer.valueOf(itemQuantity.getNumber());
+            onQuanListner.onQuanClick(getAdapterPosition(),quan);
+        }
+    }
+
+    public interface OnQuanListner{
+        void onQuanClick(int pos,int quan);
     }
 
 }

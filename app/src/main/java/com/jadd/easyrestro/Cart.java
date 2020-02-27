@@ -9,6 +9,11 @@ public class Cart {
     Item item;
     int quantity;
 
+    public Cart(String category, Item item) {
+        this.category = category;
+        this.item = item;
+    }
+
     public String getCategory() {
         return category;
     }

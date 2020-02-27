@@ -7,4 +7,5 @@
     <string name="add_table">Add Table</string>
     <string name="order_name">Order</string>
     <string name="cart_add_item_title">Add Item</string>
+    <string name="new_order_title">New Order</string>
 </resources>

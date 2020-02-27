@@ -1,81 +1,81 @@
 package com.jadd.easyrestro;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class OrderActivity extends AppCompatActivity {
 
-    EditText nameField, phoneNumberField;
-    Spinner tableNumberSpinner;
+
     LinearLayout cartLayout;
     Button addItemButton,checkOutButton;
     DatabaseReference databaseTableNumber;
-    ArrayList<String> spinnerList;
-    ArrayAdapter<String> spinnerAdapter;
+    String tableNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+        tableNumber = getIntent().getStringExtra("TABLE_NUMBER");
+
         databaseTableNumber = FirebaseDatabase.getInstance().getReference("Table");
-        nameField = findViewById(R.id.order_name_field);
-        phoneNumberField = findViewById(R.id.order_phone_number_field);
-        tableNumberSpinner = findViewById(R.id.order_table_number_spinner);
+
         addItemButton = findViewById(R.id.order_add_item_button);
         checkOutButton = findViewById(R.id.order_checkout_button);
         cartLayout = findViewById(R.id.order_cart);
 
-        spinnerList = new ArrayList<>();
 
-        spinnerData();
+
+
 
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OrderActivity.this,CartAddItemActivity.class);
-                startActivity(intent);
+                intent.putExtra("TABLE_NUMBER",tableNumber);
+                startActivityForResult(intent,1);
             }
         });
 
     }
 
-    private void spinnerData() {
-
-        databaseTableNumber.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot item: dataSnapshot.getChildren()){
-                    //Category category = item.getKey();
-                    spinnerList.add(item.getKey());
-
-                }
-                spinnerAdapter = new ArrayAdapter<>(OrderActivity.this,android.R.layout.select_dialog_item,spinnerList);
-                tableNumberSpinner.setAdapter(spinnerAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.order_activity_menu, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        //i have changed
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_delete) {
+            databaseTableNumber.child(tableNumber).child("empty").setValue(true);
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    
 }

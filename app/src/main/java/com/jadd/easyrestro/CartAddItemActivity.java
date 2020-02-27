@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,63 +24,59 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class CartAddItemActivity extends AppCompatActivity {
+public class CartAddItemActivity extends AppCompatActivity implements RecyclerViewAdapter.OnQuanListner {
 
     Spinner spinner;
     RecyclerView recyclerView;
     RecyclerViewAdapter recyclerViewAdapter;
     String category;
-    DatabaseReference databaseReference,dataBase;
+    DatabaseReference databaseReference,dataBase,tableNumberReference;
     ArrayAdapter<String> adapter;
     ArrayList<String> list;
     ArrayList<Cart> items = new ArrayList<Cart>();
     String itemName;
     Long itemPrice;
-    int quan;
+    //int quan;
     Item item1;
     long id;
     Cart cart;
     Button goButton;
+    private String tableNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_add_item);
-
+        tableNumber = getIntent().getStringExtra("TABLE_NUMBER");
         spinner = findViewById(R.id.category_spinner_add_item_cart);
 
         goButton = findViewById(R.id.go_button);
         list = new ArrayList<>();
         spinnerData();
 
-
         recyclerView = findViewById(R.id.category_recyclerView_add_cart);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CartAddItemActivity.this));
 
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                items.clear();
+                Toast.makeText(CartAddItemActivity.this, "Go Clicked!", Toast.LENGTH_SHORT).show();
                 category = String.valueOf(spinner.getSelectedItem());
                 databaseReference = FirebaseDatabase.getInstance()
                         .getReference("Category").child(category).child("Items");
-
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot item: dataSnapshot.getChildren()){
-                            //Category category = item.getKey();
-                            //item1 = (Item) item.getValue();
-                            itemName = (String) item.child("name").getValue();
-                            itemPrice = Long.valueOf((Long) item.child("price").getValue());
-                            String TAG = "Hello";
-                            Log.d(TAG, "onDataChange: " + itemPrice);
-                            id = (long) item.child("id").getValue();
-                            item1 = new Item(itemName,itemPrice,id);
-                            cart = new Cart(category,item1,0);
-                            //item1 = new Item("Devam",100,1);
-                            //cart = new Cart("Human",item1,0);
-                            items.add(cart);
+                            item1 = item.getValue(Item.class);
 
+                            cart = new Cart(category,item1);
+
+                            items.add(cart);
                         }
+                        recyclerViewAdapter = new RecyclerViewAdapter(CartAddItemActivity.this,items,category,CartAddItemActivity.this);
+                        recyclerView.setAdapter(recyclerViewAdapter);
                     }
 
                     @Override
@@ -85,23 +84,9 @@ public class CartAddItemActivity extends AppCompatActivity {
 
                     }
                 });
-
-                item1 = new Item("Devam",100,1);
-                cart = new Cart("Human",item1,0);
-                items.add(cart);
-                items.add(cart);
-
             }
         });
 
-
-
-
-
-
-        recyclerViewAdapter = new RecyclerViewAdapter(CartAddItemActivity.this,items,"abc");
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void spinnerData() {
@@ -127,5 +112,19 @@ public class CartAddItemActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onQuanClick(int position,int quan) {
+        tableNumberReference = FirebaseDatabase.getInstance().getReference("Table").child(tableNumber).child("Cart");
+        String category = items.get(position).getCategory();
+        String itemName = items.get(position).getItem().getName();
+        if(quan==0){
+            tableNumberReference.child(category).child(itemName).removeValue();
+            return;
+        }
+        items.get(position).setQuantity(quan);
+
+        tableNumberReference.child(category).child(itemName).setValue(items.get(position));
     }
 }
