@@ -55,7 +55,7 @@
         android:layout_marginEnd="26dp"
         android:layout_marginRight="25dp"
         android:gravity="center_vertical"
-        app:backGroundColor="#CDDC39"
+        app:backGroundColor="@color/buttonColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

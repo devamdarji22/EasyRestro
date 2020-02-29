@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class SettingActivity extends AppCompatActivity {
 
-    TextView menuText , addCategoryText, addItemText, addTableText;
+    TextView menuText , addCategoryText, addItemText, addTableText,settingTax;
     Context context;
 
     @Override
@@ -20,6 +20,7 @@ public class SettingActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        settingTax = findViewById(R.id.setting_tax);
         menuText = findViewById(R.id.menu);
         addItemText = findViewById(R.id.addItem);
         addCategoryText = findViewById(R.id.addCategory);
@@ -29,6 +30,14 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context , MenuActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        settingTax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context , TaxActivity.class);
                 startActivity(intent);
             }
         });

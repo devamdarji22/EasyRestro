@@ -30,13 +30,13 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
     RecyclerView recyclerView;
     RecyclerViewAdapter recyclerViewAdapter;
     String category;
-    DatabaseReference databaseReference,dataBase,tableNumberReference;
+    DatabaseReference databaseReference,dataBase,tableNumberReference,databaseAddItemReference;
     ArrayAdapter<String> adapter;
     ArrayList<String> list;
     ArrayList<Cart> items = new ArrayList<Cart>();
     String itemName;
     Long itemPrice;
-    //int quan;
+    static int quan1,flag;
     Item item1;
     long id;
     Cart cart;
@@ -61,22 +61,53 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
             @Override
             public void onClick(View view) {
                 items.clear();
-                Toast.makeText(CartAddItemActivity.this, "Go Clicked!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CartAddItemActivity.this, "Go Clicked!", Toast.LENGTH_SHORT).show();
                 category = String.valueOf(spinner.getSelectedItem());
                 databaseReference = FirebaseDatabase.getInstance()
                         .getReference("Category").child(category).child("Items");
+                databaseAddItemReference = FirebaseDatabase.getInstance().getReference("Table")
+                        .child(tableNumber).child("Cart").child(category);
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for(DataSnapshot item: dataSnapshot.getChildren()){
-                            item1 = item.getValue(Item.class);
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                        if(dataSnapshot!=null) {
+                            for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                quan1 = 0;
+                                flag = 0;
+                                item1 = item.getValue(Item.class);
+                                cart = new Cart(category, item1);
+                                items.add(cart);
 
-                            cart = new Cart(category,item1);
+                            }
+                            databaseAddItemReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                                    if (dataSnapshot1 != null) {
+                                        for (DataSnapshot ch : dataSnapshot1.getChildren()) {
+                                            for (int i = 0; i < items.size(); i++) {
+                                                if (ch.getKey().equals(items.get(i).getItem().getName()) && dataSnapshot1.exists()) {
+                                                    //Toast.makeText(CartAddItemActivity.this, "Here!", Toast.LENGTH_SHORT).show();
+                                                    quan1 = ((Long) ch.child("quantity").getValue()).intValue();
+                                                    items.get(i).setQuantity(quan1);
+                                                    flag = 1;
+                                                }
+                                            }
+                                        }
+                                        recyclerViewAdapter = new RecyclerViewAdapter(CartAddItemActivity.this, items, CartAddItemActivity.this);
+                                        recyclerView.setAdapter(recyclerViewAdapter);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            items.add(cart);
+                                }
+                            });
+                            if (flag != 1) {
+                                recyclerViewAdapter = new RecyclerViewAdapter(CartAddItemActivity.this, items, CartAddItemActivity.this);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+
+                            }
                         }
-                        recyclerViewAdapter = new RecyclerViewAdapter(CartAddItemActivity.this,items,category,CartAddItemActivity.this);
-                        recyclerView.setAdapter(recyclerViewAdapter);
                     }
 
                     @Override
@@ -87,6 +118,33 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
             }
         });
 
+    }
+
+    public interface MyCallback {
+        void onCallback(int value);
+    }
+
+    public void readData(final MyCallback myCallback) {
+        databaseAddItemReference = FirebaseDatabase.getInstance().getReference("Table")
+                .child(tableNumber).child("Cart").child(category);
+        databaseAddItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot1) {
+
+                if(dataSnapshot1!=null){
+                    for(DataSnapshot ch: dataSnapshot1.getChildren()) {
+                        if (ch.getKey().equals(item1.getName()) && dataSnapshot1.exists()) {
+                            quan1 = ((Long) ch.child("quantity").getValue()).intValue();
+                            myCallback.onCallback(quan1);
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     private void spinnerData() {

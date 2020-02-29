@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 
@@ -18,13 +19,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     Context mConext;
     ArrayList<Cart> items;
-    String category;
+    //String category;
     OnQuanListner onQuanListner;
 
-    public RecyclerViewAdapter(Context mConext, ArrayList<Cart> items, String category, OnQuanListner onQuanListner) {
+    public RecyclerViewAdapter(Context mConext, ArrayList<Cart> items, OnQuanListner onQuanListner) {
         this.mConext = mConext;
         this.items = items;
-        this.category = category;
+        //this.category = category;
         this.onQuanListner = onQuanListner;
     }
 
@@ -45,9 +46,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemName.setText(name);
         long price = items.get(position).getItem().getPrice();
         holder.itemPrice.setText(String.valueOf(price));
-        
-        //String quan = String.valueOf(items.get(position).getQuantity());
-        //holder.itemQuantity.setNumber(quan);
+        String quan = String.valueOf(items.get(position).getQuantity());
+        if(!Integer.valueOf(items.get(position).getQuantity()).equals("")){
+            holder.itemQuantity.setNumber(quan);
+            //Toast.makeText(mConext, quan, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -69,6 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemPrice = itemView.findViewById(R.id.item_price);
             itemQuantity = itemView.findViewById(R.id.item_quantity);
             this.onQuanListner = onQuanListner;
+
             itemQuantity.setOnValueChangeListener(this);
 
 

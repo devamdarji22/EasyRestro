@@ -9,10 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewOrderActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".TaxActivity"
+            android:parentActivityName=".SettingActivity"
+            android:label="@string/setting_tax_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.SettingActivity" />
+        </activity>
+        <activity
+            android:name=".NewOrderActivity"
             android:label="@string/new_order_title"
-            >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jadd.easyrestro.MainActivity" />
@@ -20,43 +27,43 @@
         <activity
             android:name=".CartAddItemActivity"
             android:label="@string/add_item_title"
-            android:parentActivityName=".OrderActivity" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.jadd.easyrestro.OrderActivity" />
+            android:parentActivityName=".OrderActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.OrderActivity" />
         </activity>
         <activity
             android:name=".AddTable"
             android:label="@string/add_table"
-            android:parentActivityName=".SettingActivity" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.jadd.easyrestro.SettingActivity" />
+            android:parentActivityName=".SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.SettingActivity" />
         </activity>
         <activity
             android:name=".OrderActivity"
             android:label="@string/order_name"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.jadd.easyrestro.MainActivity" />
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.MainActivity" />
         </activity>
         <activity
             android:name=".AddItem"
             android:label="@string/add_item_title"
-            android:parentActivityName=".SettingActivity" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.jadd.easyrestro.SettingActivity" />
+            android:parentActivityName=".SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.SettingActivity" />
         </activity>
         <activity
             android:name=".AddCategory"
             android:label="@string/add_category_title"
-            android:parentActivityName=".SettingActivity" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.jadd.easyrestro.SettingActivity" />
+            android:parentActivityName=".SettingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.SettingActivity" />
         </activity>
         <activity
             android:name=".MenuActivity"
