@@ -1,4 +1,4 @@
-package com.jadd.easyrestro;
+package com.jadd.easyrestro.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jadd.easyrestro.R;
 
 import java.util.ArrayList;
 
@@ -27,16 +28,18 @@ public class NewOrderActivity extends AppCompatActivity {
     ArrayList<String> spinnerList;
     DatabaseReference databaseTableNumber;
     Button nextButton;
+    String restroName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order);
+        restroName = getIntent().getStringExtra("RESTAURANT_NAME");
 
-        databaseTableNumber = FirebaseDatabase.getInstance().getReference("Table");
+        databaseTableNumber = FirebaseDatabase.getInstance().getReference(restroName).child("Table");
 
-        nameField = findViewById(R.id.order_name_field);
-        phoneNumberField = findViewById(R.id.order_phone_number_field);
+        //nameField = findViewById(R.id.order_name_field);
+        //phoneNumberField = findViewById(R.id.order_phone_number_field);
         tableNumberSpinner = findViewById(R.id.order_table_number_spinner);
         nextButton = findViewById(R.id.next_button);
 
@@ -51,9 +54,10 @@ public class NewOrderActivity extends AppCompatActivity {
             public void onClick(View view) {
                 databaseTableNumber.child((String)tableNumberSpinner
                         .getSelectedItem()).child("empty").setValue(false);
-                Intent intent = new Intent(NewOrderActivity.this,OrderActivity.class);
+                Intent intent = new Intent(NewOrderActivity.this, OrderActivity.class);
                 intent.putExtra("TABLE_NUMBER",(String)tableNumberSpinner
                         .getSelectedItem());
+                intent.putExtra("RESTAURANT_NAME",restroName);
                 startActivity(intent);
             }
         });

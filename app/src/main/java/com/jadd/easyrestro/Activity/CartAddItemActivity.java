@@ -1,26 +1,25 @@
-package com.jadd.easyrestro;
+package com.jadd.easyrestro.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jadd.easyrestro.Adapter.RecyclerViewAdapter;
+import com.jadd.easyrestro.R;
+import com.jadd.easyrestro.classes.Cart;
+import com.jadd.easyrestro.classes.Item;
 
 import java.util.ArrayList;
 
@@ -42,11 +41,13 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
     Cart cart;
     Button goButton;
     private String tableNumber;
+    String restroName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_add_item);
+        restroName = getIntent().getStringExtra("RESTAURANT_NAME");
         tableNumber = getIntent().getStringExtra("TABLE_NUMBER");
         spinner = findViewById(R.id.category_spinner_add_item_cart);
 
@@ -64,9 +65,9 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
                 //Toast.makeText(CartAddItemActivity.this, "Go Clicked!", Toast.LENGTH_SHORT).show();
                 category = String.valueOf(spinner.getSelectedItem());
                 databaseReference = FirebaseDatabase.getInstance()
-                        .getReference("Category").child(category).child("Items");
-                databaseAddItemReference = FirebaseDatabase.getInstance().getReference("Table")
-                        .child(tableNumber).child("Cart").child(category);
+                        .getReference(restroName).child("Category").child(category).child("Items");
+                databaseAddItemReference = FirebaseDatabase.getInstance().getReference(restroName).child("Table")
+                        .child(tableNumber).child("Cart");
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -79,6 +80,7 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
                                 items.add(cart);
 
                             }
+
                             databaseAddItemReference.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
@@ -125,7 +127,7 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
     }
 
     public void readData(final MyCallback myCallback) {
-        databaseAddItemReference = FirebaseDatabase.getInstance().getReference("Table")
+        databaseAddItemReference = FirebaseDatabase.getInstance().getReference(restroName).child("Table")
                 .child(tableNumber).child("Cart").child(category);
         databaseAddItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -149,7 +151,7 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
 
     private void spinnerData() {
 
-        dataBase = FirebaseDatabase.getInstance().getReference("Category");
+        dataBase = FirebaseDatabase.getInstance().getReference(restroName).child("Category");
         dataBase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -174,15 +176,16 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
 
     @Override
     public void onQuanClick(int position,int quan) {
-        tableNumberReference = FirebaseDatabase.getInstance().getReference("Table").child(tableNumber).child("Cart");
+        tableNumberReference = FirebaseDatabase.getInstance().getReference(restroName).child("Table")
+                .child(tableNumber).child("Cart");
         String category = items.get(position).getCategory();
         String itemName = items.get(position).getItem().getName();
         if(quan==0){
-            tableNumberReference.child(category).child(itemName).removeValue();
+            tableNumberReference.child(itemName).removeValue();
             return;
         }
         items.get(position).setQuantity(quan);
 
-        tableNumberReference.child(category).child(itemName).setValue(items.get(position));
+        tableNumberReference.child(itemName).setValue(items.get(position));
     }
 }

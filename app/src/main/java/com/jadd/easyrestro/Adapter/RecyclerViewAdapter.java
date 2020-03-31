@@ -1,15 +1,15 @@
-package com.jadd.easyrestro;
+package com.jadd.easyrestro.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.jadd.easyrestro.R;
+import com.jadd.easyrestro.classes.Cart;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;

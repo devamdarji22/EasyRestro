@@ -1,4 +1,4 @@
-package com.jadd.easyrestro;
+package com.jadd.easyrestro.classes;
 
 public class Item {
 

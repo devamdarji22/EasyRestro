@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".NewOrderActivity">
+    tools:context=".Activity.NewOrderActivity">
 
-    <EditText
+    <!--<EditText
         android:id="@+id/order_name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:ems="10"
         android:hint="Phone Number"
         android:inputType="phone"
-        android:textAlignment="center" />
+        android:textAlignment="center" />-->
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".OrderActivity"
+    tools:context=".Activity.OrderActivity"
     >
 
     <ScrollView
@@ -44,7 +44,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/order_cart_recycler_view"/>
+                    android:id="@+id/order_cart_recycler_view"
+                    android:paddingBottom="10dp"/>
             </LinearLayout>
 
             <Button
@@ -55,6 +56,31 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/button_background"
                 android:text="Add Item" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="Send To Kitchen"
+                    android:textSize="20sp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"/>
+
+                <CheckBox
+                    android:id="@+id/sendToKitchen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="false" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/amount_subtotal"

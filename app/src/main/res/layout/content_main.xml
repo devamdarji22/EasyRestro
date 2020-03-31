@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.jadd.easyrestro.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.jadd.easyrestro.Activity.MainActivity">
 
 
     <TextView
@@ -44,6 +43,30 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginRight="0dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/ic_add_circle_black_24dp"
+        android:tint="#FFFFFF"
+        app:backgroundTint="#000000"
+        app:borderWidth="1dp"
+        app:elevation="15dp"
+        app:fabSize="auto"
+        app:hoveredFocusedTranslationZ="15dp"
+        app:maxImageSize="50dp"
+        app:pressedTranslationZ="15dp" />
 
 
 </RelativeLayout>

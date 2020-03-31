@@ -1,11 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.jadd.easyrestro.MainActivity">
+    tools:showIn="navigation_view"
+    >
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings_black_24dp"
-        app:showAsAction="ifRoom" />
+        android:iconTint="@color/colorPrimary"
+        />
+    <item
+        android:id="@+id/action_employee"
+        android:title="@string/action_employee"
+        android:icon="@drawable/ic_employee" />
+    <item
+        android:id="@+id/action_restaurant"
+        android:title="@string/action_restaurant"
+        android:icon="@drawable/ic_restaurant" />
+    <item
+        android:id="@+id/action_sign_out"
+        android:title="@string/action_sign_out"
+        android:icon="@drawable/ic_sign_out"/>
 </menu>

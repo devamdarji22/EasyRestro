@@ -1,4 +1,4 @@
-package com.jadd.easyrestro;
+package com.jadd.easyrestro.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jadd.easyrestro.R;
+import com.jadd.easyrestro.classes.Category;
 
 public class AddCategory extends AppCompatActivity {
 
@@ -22,13 +24,15 @@ public class AddCategory extends AppCompatActivity {
     Button button;
     DatabaseReference databaseReference;
     long maxID = 0;
+    String restroName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
+        restroName = getIntent().getStringExtra("RESTAURANT_NAME");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Category");
+        databaseReference = FirebaseDatabase.getInstance().getReference(restroName).child("Category");
 
         categoryNameEditTExt = findViewById(R.id.category_edit_text);
         button = findViewById(R.id.add_category_button);

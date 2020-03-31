@@ -1,10 +1,7 @@
-package com.jadd.easyrestro;
+package com.jadd.easyrestro.Settings;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.database.sqlite.SQLiteTableLockedException;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,11 +11,8 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import com.jadd.easyrestro.R;
+import com.jadd.easyrestro.classes.Table;
 
 public class AddTable extends AppCompatActivity {
 
@@ -26,16 +20,17 @@ public class AddTable extends AppCompatActivity {
     EditText tableNumberEditText;
     Button button;
     Table table;
+    String restroName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_table);
-
+        restroName = getIntent().getStringExtra("RESTAURANT_NAME");
         tableNumberEditText = findViewById(R.id.table_number);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Table");
+        databaseReference = FirebaseDatabase.getInstance().getReference(restroName).child("Table");
 
         button = findViewById(R.id.add_table_button);
         //Toast.makeText(AddTable.this, "Table Added", Toast.LENGTH_SHORT).show();
@@ -47,8 +42,8 @@ public class AddTable extends AppCompatActivity {
                 String tableN = tableNumberEditText.getText().toString().trim();
                 if(!TextUtils.isEmpty(tableN)) {
                     int tableNumber = Integer.parseInt(tableNumberEditText.getText().toString());
-                    table = new Table(tableNumber, true);
-                    databaseReference.child(Integer.toString(tableNumber)).setValue(table);
+                    table = new Table(tableNumber, true,false);
+                    databaseReference.child(String.valueOf(tableNumber)).setValue(table);
                     tableNumberEditText.setText("");
                     Toast.makeText(AddTable.this, "Table Added", Toast.LENGTH_SHORT).show();
                 }

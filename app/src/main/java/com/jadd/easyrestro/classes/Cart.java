@@ -1,7 +1,4 @@
-package com.jadd.easyrestro;
-
-import java.util.List;
-import java.util.Map;
+package com.jadd.easyrestro.classes;
 
 public class Cart {
 

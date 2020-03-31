@@ -1,8 +1,10 @@
-package com.jadd.easyrestro;
+package com.jadd.easyrestro.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.jadd.easyrestro.R;
 
 public class MenuActivity extends AppCompatActivity {
 
