@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jadd.easyrestro.Activity.TaxActivity;
+import com.jadd.easyrestro.Settings.TaxActivity;
 import com.jadd.easyrestro.R;
 import com.jadd.easyrestro.Settings.AddCategory;
 import com.jadd.easyrestro.Settings.AddItem;

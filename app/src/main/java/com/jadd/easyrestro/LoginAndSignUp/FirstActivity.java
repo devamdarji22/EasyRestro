@@ -1,4 +1,4 @@
-package com.jadd.easyrestro.Activity;
+package com.jadd.easyrestro.LoginAndSignUp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +18,7 @@ public class FirstActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser()!= null){
-            Intent intent = new Intent(FirstActivity.this,LoginActivity.class);
+            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
             //intent.putExtra("OWNER_FLAG",)
         }
     }

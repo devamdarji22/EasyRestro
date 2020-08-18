@@ -1,4 +1,4 @@
-package com.jadd.easyrestro.Activity;
+package com.jadd.easyrestro.LoginAndSignUp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +13,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.jadd.easyrestro.Activity.RestaurantActivity;
 import com.jadd.easyrestro.R;
 import com.jadd.easyrestro.Repository.Repository;
 import com.jadd.easyrestro.classes.Employee;
@@ -36,7 +39,9 @@ public class SignUpActivity extends AppCompatActivity {
     Employee employee;
     Repository repository;
     private boolean ownerFlag;
+    //Employee employee;
     private FirebaseUser ownerUser;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up_activity_button);
         emailText = findViewById(R.id.owner_activity_email);
         phoneText = findViewById(R.id.owner_activity_phone);
-        Toast.makeText(SignUpActivity.this, "OnCLick", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(SignUpActivity.this, "OnCLick", Toast.LENGTH_SHORT).show();
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,9 +66,21 @@ public class SignUpActivity extends AppCompatActivity {
                 signUpReference = FirebaseDatabase.getInstance().getReference("Users");
                 //signUpReference.child("x").setValue("x");
 
-                if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+                if(auth.getCurrentUser()!=null){
                     ownerUser = FirebaseAuth.getInstance().getCurrentUser();
                 }
+
+                signUpReference.child("Employee").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        id = (long)dataSnapshot.child("count").getValue();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
                 //Toast.makeText(SignUpActivity.this, "OnCLick", Toast.LENGTH_SHORT).show();
                 //repository = new Repository(user1,ownerPassword);
@@ -88,15 +105,18 @@ public class SignUpActivity extends AppCompatActivity {
                                         });
                                     }
                                     else {
-                                        signUpReference.child("Employee").child(user.getUid()).setValue(SignUpActivity.this.user1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        employee = new Employee(user1,id+1);
+                                        signUpReference.child("Employee").child(user.getUid()).setValue(SignUpActivity.this.employee).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
+
                                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                                 intent.putExtra("OWNER_FLAG",false );
                                                 FirebaseAuth.getInstance().signOut();
                                                 startActivity(intent);
                                             }
                                         });
+                                        signUpReference.child("Employee").child("count").setValue(id+1);
                                     }
                                 } else {
                                     // If sign in fails, display a message to the user1.

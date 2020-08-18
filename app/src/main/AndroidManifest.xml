@@ -9,6 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activity.EmployeeWaitActivity"></activity>
+        <activity
+            android:name=".Activity.AddEmployeeActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".Activity.EmployeeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadd.easyrestro.Activity.EmployeeActivity" />
+        </activity>
         <activity
             android:name=".Activity.EmployeeActivity"
             android:launchMode="singleTop"
@@ -26,7 +35,7 @@
                 android:value="com.jadd.easyrestro.Activity.RestaurantActivity" />
         </activity>
         <activity android:name=".Activity.RestaurantActivity" />
-        <activity android:name=".Activity.FirstActivity">
+        <activity android:name=".LoginAndSignUp.FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,22 +43,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.SignUpActivity"
-            android:parentActivityName=".Activity.LoginActivity">
+            android:name=".LoginAndSignUp.SignUpActivity"
+            android:parentActivityName=".LoginAndSignUp.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jadd.easyrestro.Activity.LoginActivity" />
+                android:value="com.jadd.easyrestro.LoginAndSignUp.LoginActivity" />
         </activity>
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".LoginAndSignUp.LoginActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".Activity.FirstActivity">
+            android:parentActivityName=".LoginAndSignUp.FirstActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jadd.easyrestro.Activity.FirstActivity" />
+                android:value="com.jadd.easyrestro.LoginAndSignUp.FirstActivity" />
         </activity>
         <activity
-            android:name=".Activity.TaxActivity"
+            android:name=".Settings.TaxActivity"
             android:label="@string/setting_tax_name"
             android:launchMode="singleTop"
             android:parentActivityName=".Activity.SettingActivity">

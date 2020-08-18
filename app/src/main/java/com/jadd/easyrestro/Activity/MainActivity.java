@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -18,8 +19,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jadd.easyrestro.Adapter.MainRecyclerViewAdapter;
+import com.jadd.easyrestro.LoginAndSignUp.FirstActivity;
 import com.jadd.easyrestro.R;
 
+import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
 
@@ -56,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         drawerLayout.addDrawerListener(this);
         actionBarDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        if(!ownerFlag) {
+            menu.setGroupVisible(R.id.owner_group, false);
+        }
         navigationView.setNavigationItemSelectedListener(this);
 
         databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
@@ -144,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         else if(id == R.id.action_sign_out){
             FirebaseAuth.getInstance().signOut();
             finish();
-            Intent intent = new Intent(MainActivity.this,FirstActivity.class);
+            Intent intent = new Intent(MainActivity.this, FirstActivity.class);
             startActivity(intent);
         }
         else if(id == R.id.action_employee){

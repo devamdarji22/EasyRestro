@@ -1,4 +1,4 @@
-package com.jadd.easyrestro.Activity;
+package com.jadd.easyrestro.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,9 @@ public class TaxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tax);
 
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
-        databaseReference = FirebaseDatabase.getInstance().getReference(restroName).child("Constant").child("Tax");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Constant").child("Tax");
         vatCheckBox =findViewById(R.id.vat_check_box);
         serviceTaxCheckBox = findViewById(R.id.service_tax_check_box);
         serviceChargeCheckBox = findViewById(R.id.service_charge_check_box);

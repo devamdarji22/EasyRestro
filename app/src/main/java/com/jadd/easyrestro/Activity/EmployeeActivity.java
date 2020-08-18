@@ -10,10 +10,10 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jadd.easyrestro.Adapter.EmployeeRecyclerViewAdapter;
+import com.jadd.easyrestro.LoginAndSignUp.SignUpActivity;
 import com.jadd.easyrestro.R;
 
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 
 public class EmployeeActivity extends AppCompatActivity implements EmployeeRecyclerViewAdapter.OnEmployeeNameClickListner {
 
@@ -33,11 +33,11 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeRecyc
         recyclerView.setLayoutManager(new LinearLayoutManager(EmployeeActivity.this));
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_restro_button);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_employee_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EmployeeActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(EmployeeActivity.this, AddEmployeeActivity.class);
                 intent.putExtra("OWNER_FLAG" ,false);
                 intent.putExtra("RESTAURANT_NAME",restroName);
                 startActivity(intent);

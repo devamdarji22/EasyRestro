@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,10 +61,18 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
 
         tableNumber = getIntent().getStringExtra("TABLE_NUMBER");
 
-        databaseTableNumber = FirebaseDatabase.getInstance().getReference(restroName).child("Table").child(tableNumber).child("Cart");
-        orderRef = FirebaseDatabase.getInstance().getReference(restroName).child("Orders");
-        ref = FirebaseDatabase.getInstance().getReference(restroName).child("Table");
-        taxRef = FirebaseDatabase.getInstance().getReference(restroName).child("Constant").child("Tax");
+        databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Table").child(tableNumber).child("Cart");
+        orderRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Orders");
+        ref = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Table");
+        taxRef = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Constant").child("Tax");
 
         kitchenCheckBox = findViewById(R.id.sendToKitchen);
         cartDiscount = findViewById(R.id.cart_discount);

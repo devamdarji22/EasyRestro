@@ -1,4 +1,4 @@
-package com.jadd.easyrestro.Activity;
+package com.jadd.easyrestro.LoginAndSignUp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +18,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.jadd.easyrestro.Activity.EmployeeWaitActivity;
+import com.jadd.easyrestro.Activity.MainActivity;
+import com.jadd.easyrestro.Activity.RestaurantActivity;
 import com.jadd.easyrestro.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -55,18 +58,18 @@ public class LoginActivity extends AppCompatActivity {
                 if(firebaseAuth.getCurrentUser() != null){
                     Intent intent;
                     if(ownerFlag){
-                        intent = new Intent(LoginActivity.this,RestaurantActivity.class);
+                        intent = new Intent(LoginActivity.this, RestaurantActivity.class);
                         startActivity(intent);
                     }
                     else {
-                        intent = new Intent(LoginActivity.this,MainActivity.class);
+                        intent = new Intent(LoginActivity.this, EmployeeWaitActivity.class);
                         intent.putExtra("OWNER_FLAG",false);
-
+                        startActivity(intent);
 
                         //Toast.makeText(LoginActivity.this, "Employee", Toast.LENGTH_SHORT).show();
                         //intent = new Intent(LoginActivity.this,RestaurantActivity.class);
                     }
-                    //startActivity(intent);
+                    //
                 }
             }
         };

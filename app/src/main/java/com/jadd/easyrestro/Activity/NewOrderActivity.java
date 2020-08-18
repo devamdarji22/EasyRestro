@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 
 public class NewOrderActivity extends AppCompatActivity {
 
-    EditText nameField, phoneNumberField;
     Spinner tableNumberSpinner;
     ArrayAdapter<String> spinnerAdapter;
     ArrayList<String> spinnerList;
@@ -36,7 +36,9 @@ public class NewOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_order);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
 
-        databaseTableNumber = FirebaseDatabase.getInstance().getReference(restroName).child("Table");
+        databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Table");
 
         //nameField = findViewById(R.id.order_name_field);
         //phoneNumberField = findViewById(R.id.order_phone_number_field);

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jadd.easyrestro.R;
@@ -30,7 +31,9 @@ public class AddTable extends AppCompatActivity {
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
         tableNumberEditText = findViewById(R.id.table_number);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(restroName).child("Table");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Table");
 
         button = findViewById(R.id.add_table_button);
         //Toast.makeText(AddTable.this, "Table Added", Toast.LENGTH_SHORT).show();

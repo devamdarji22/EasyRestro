@@ -20,11 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jadd.easyrestro.Adapter.RestaurantRecyclerViewAdapter;
+import com.jadd.easyrestro.LoginAndSignUp.FirstActivity;
 import com.jadd.easyrestro.R;
-import com.jadd.easyrestro.classes.Restaurant;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class RestaurantActivity extends AppCompatActivity implements RestaurantRecyclerViewAdapter.OnRestaurantClickListener {
 
@@ -71,6 +70,7 @@ public class RestaurantActivity extends AppCompatActivity implements RestaurantR
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RestaurantActivity.this, NewRestaurantActivity.class);
+                intent.putExtra("OWNER_FLAG",true);
                 startActivity(intent);
             }
         });
@@ -91,7 +91,7 @@ public class RestaurantActivity extends AppCompatActivity implements RestaurantR
         if(item.getItemId() == R.id.action_owner_sign_out){
             FirebaseAuth.getInstance().signOut();
             finish();
-            Intent intent = new Intent(RestaurantActivity.this,FirstActivity.class);
+            Intent intent = new Intent(RestaurantActivity.this, FirstActivity.class);
             startActivity(intent);
         }
         return true;

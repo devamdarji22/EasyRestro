@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +43,9 @@ public class AddItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
-        databaseReference = FirebaseDatabase.getInstance().getReference(restroName).child("Category");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Category");
 
         itemName = findViewById(R.id.item_name_edit_text);
         itemPrice = findViewById(R.id.item_price_edit_text);

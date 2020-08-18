@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +26,7 @@ public class AddCategory extends AppCompatActivity {
     DatabaseReference databaseReference;
     long maxID = 0;
     String restroName;
+    String ownerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,10 @@ public class AddCategory extends AppCompatActivity {
         setContentView(R.layout.activity_add_category);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(restroName).child("Category");
+        ownerUID = FirebaseAuth.getInstance().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(ownerUID)
+                .child("Restaurants").child(restroName).child("Category");
 
         categoryNameEditTExt = findViewById(R.id.category_edit_text);
         button = findViewById(R.id.add_category_button);

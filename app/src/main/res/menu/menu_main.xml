@@ -3,20 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view"
     >
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:iconTint="@color/colorPrimary"
-        />
-    <item
-        android:id="@+id/action_employee"
-        android:title="@string/action_employee"
-        android:icon="@drawable/ic_employee" />
-    <item
-        android:id="@+id/action_restaurant"
-        android:title="@string/action_restaurant"
-        android:icon="@drawable/ic_restaurant" />
+    <group android:id="@+id/owner_group">
+        <item
+            android:id="@+id/action_restaurant"
+            android:icon="@drawable/ic_restaurant"
+            android:title="@string/action_restaurant" />
+        <item
+            android:id="@+id/action_employee"
+            android:icon="@drawable/ic_employee"
+            android:title="@string/action_employee" />
+        <item
+            android:id="@+id/action_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:iconTint="@color/colorPrimary"
+            android:title="@string/action_settings" />
+    </group>
     <item
         android:id="@+id/action_sign_out"
         android:title="@string/action_sign_out"
