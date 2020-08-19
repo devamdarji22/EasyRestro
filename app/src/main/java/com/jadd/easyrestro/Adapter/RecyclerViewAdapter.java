@@ -84,7 +84,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
             quan = Integer.valueOf(itemQuantity.getNumber());
-            onQuanListner.onQuanClick(getAdapterPosition(),quan);
+            onQuanListner.onQuanClick(getAdapterPosition(),newValue);
         }
     }
 

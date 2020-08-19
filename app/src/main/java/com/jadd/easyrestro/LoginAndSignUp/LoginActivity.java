@@ -17,7 +17,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.jadd.easyrestro.Activity.EmployeeRestaurantActivity;
 import com.jadd.easyrestro.Activity.EmployeeWaitActivity;
 import com.jadd.easyrestro.Activity.MainActivity;
 import com.jadd.easyrestro.Activity.RestaurantActivity;
@@ -32,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference loginRef;
     boolean ownerFlag;
     private FirebaseAuth auth;
+    boolean assigned;
     private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
@@ -51,20 +57,43 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up_button);
         signUpView = findViewById(R.id.register_text_view);
         auth = FirebaseAuth.getInstance();
-
+        if(!ownerFlag) {
+            loginRef = FirebaseDatabase.getInstance().getReference("Users").child("Employee").child(FirebaseAuth.getInstance().getUid()).child("assigned");
+        }
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
-                    Intent intent;
+
                     if(ownerFlag){
+                        Intent intent;
                         intent = new Intent(LoginActivity.this, RestaurantActivity.class);
                         startActivity(intent);
                     }
                     else {
-                        intent = new Intent(LoginActivity.this, EmployeeWaitActivity.class);
-                        intent.putExtra("OWNER_FLAG",false);
-                        startActivity(intent);
+
+                        loginRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                assigned = dataSnapshot.getValue(Boolean.class);
+                                Intent intent;
+                                if(assigned){
+                                    intent = new Intent(LoginActivity.this, EmployeeRestaurantActivity.class);
+                                }
+                                else {
+                                    intent = new Intent(LoginActivity.this, EmployeeWaitActivity.class);
+                                }
+                                intent.putExtra("OWNER_FLAG",false);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
 
                         //Toast.makeText(LoginActivity.this, "Employee", Toast.LENGTH_SHORT).show();
                         //intent = new Intent(LoginActivity.this,RestaurantActivity.class);

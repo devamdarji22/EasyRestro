@@ -25,6 +25,7 @@ import com.jadd.easyrestro.R;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,9 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         actionBarDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
+
         if(!ownerFlag) {
+            Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
             menu.setGroupVisible(R.id.owner_group, false);
         }
         navigationView.setNavigationItemSelectedListener(this);
@@ -145,7 +148,13 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
             startActivity(intent);
         }
         else if(id == R.id.action_restaurant){
-            Intent i = new Intent(this, RestaurantActivity.class);
+            Intent i;
+            if(ownerFlag) {
+                i = new Intent(this, RestaurantActivity.class);
+            }
+            else {
+                i = new Intent(this, EmployeeRestaurantActivity.class);
+            }
             startActivity(i);
         }
         else if(id == R.id.action_sign_out){

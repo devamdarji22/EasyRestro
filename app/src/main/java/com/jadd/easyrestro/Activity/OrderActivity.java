@@ -248,8 +248,10 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
 
     @Override
     public void onQuanClick(int position, int quan) {
-        tableNumberReference = FirebaseDatabase.getInstance().getReference(restroName)
-                .child("Table").child(tableNumber).child("Cart");
+        tableNumberReference = FirebaseDatabase.getInstance().getReference("Users")
+                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Restaurants").child(restroName).child("Table")
+                .child(tableNumber).child("Cart");
         String category = items.get(position).getCategory();
         String itemName = items.get(position).getItem().getName();
         if(quan==0){
