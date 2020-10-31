@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/owner_activity_name"
@@ -31,7 +32,8 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/owner_activity_email"
@@ -44,7 +46,8 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/owner_activity_name" />
+        app:layout_constraintTop_toBottomOf="@+id/owner_activity_name"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/owner_activity_phone"
@@ -57,7 +60,8 @@
         android:hint="Phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/owner_activity_email" />
+        app:layout_constraintTop_toBottomOf="@+id/owner_activity_email"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:id="@+id/owner_activity_password"
@@ -70,7 +74,8 @@
         android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/owner_activity_phone" />
+        app:layout_constraintTop_toBottomOf="@+id/owner_activity_phone"
+        android:gravity="center_horizontal" />
 
     <Button
         android:id="@+id/sign_up_activity_button"
