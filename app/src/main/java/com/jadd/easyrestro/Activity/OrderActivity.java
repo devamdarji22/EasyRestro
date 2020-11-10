@@ -44,7 +44,7 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
     String tableNumber;
     ArrayList<Cart> items = new ArrayList<Cart>();
     CheckBox kitchenCheckBox;
-    boolean sendToKitchen;
+    boolean sendToKitchen,ownerFlag;
     Cart cart;
     Tax vat,serviceTax,serviceCharge,x;
     StringBuilder s;
@@ -52,26 +52,27 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
     Order order;
     int count=0;
     String restroName;
+    private String ownerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
-
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
         tableNumber = getIntent().getStringExtra("TABLE_NUMBER");
-
+        ownerFlag = getIntent().getBooleanExtra("OWNER_FLAG",true);
         databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Table").child(tableNumber).child("Cart");
         orderRef = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Orders");
         ref = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Table");
         taxRef = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Constant").child("Tax");
 
         kitchenCheckBox = findViewById(R.id.sendToKitchen);
@@ -178,6 +179,7 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
                                         ref.child(tableNumber).child("sendToKitchen").setValue(false);
                                         Intent i = new Intent(OrderActivity.this, MainActivity.class);
                                         i.putExtra("RESTAURANT_NAME",restroName);
+                                        i.putExtra("OWNER_UID",ownerUID);
                                         startActivity(i);
                                     }
                                 });
@@ -206,6 +208,7 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
                 Intent intent = new Intent(OrderActivity.this, CartAddItemActivity.class);
                 intent.putExtra("TABLE_NUMBER",tableNumber);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivityForResult(intent,1);
             }
         });
@@ -234,6 +237,8 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
             databaseTableNumber.removeValue();
             Intent intent = new Intent(this,MainActivity.class);
             intent.putExtra("RESTAURANT_NAME",restroName);
+            intent.putExtra("OWNER_UID",ownerUID);
+            intent.putExtra("OWNER_FLAG",ownerFlag);
             startActivity(intent);
             return true;
         }
@@ -249,7 +254,7 @@ public class OrderActivity extends AppCompatActivity implements RecyclerViewAdap
     @Override
     public void onQuanClick(int position, int quan) {
         tableNumberReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Table")
                 .child(tableNumber).child("Cart");
         String category = items.get(position).getCategory();

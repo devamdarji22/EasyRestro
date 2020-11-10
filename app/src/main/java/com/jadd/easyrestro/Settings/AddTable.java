@@ -22,6 +22,7 @@ public class AddTable extends AppCompatActivity {
     Button button;
     Table table;
     String restroName;
+    private String ownerUID;
 
 
     @Override
@@ -29,10 +30,11 @@ public class AddTable extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_table);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
         tableNumberEditText = findViewById(R.id.table_number);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Table");
 
         button = findViewById(R.id.add_table_button);

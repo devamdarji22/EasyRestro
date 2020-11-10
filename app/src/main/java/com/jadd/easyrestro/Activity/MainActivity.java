@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
     RecyclerView recyclerView;
     MainRecyclerViewAdapter adapter;
     ArrayList<String> tableNumber;
-    DatabaseReference databaseTableNumber;
+    DatabaseReference databaseTableNumber,employeeReference;
     String restroName;
     private boolean ownerFlag;
+    String ownerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,46 +62,94 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         actionBarDrawerToggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
-
+        employeeReference = FirebaseDatabase.getInstance().getReference("Users").child("Employee");
+        //menu.setGroupVisible(R.id.owner_group, false);
         if(!ownerFlag) {
             Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
             menu.setGroupVisible(R.id.owner_group, false);
-        }
-        navigationView.setNavigationItemSelectedListener(this);
+            navigationView.setNavigationItemSelectedListener(this);
+            employeeReference.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ownerUID = dataSnapshot.child("ownerUid").getValue(String.class);
+                    databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
+                            .child("Owner").child(ownerUID)
+                            .child("Restaurants").child(restroName).child("Table");
 
-        databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
-                .child("Restaurants").child(restroName).child("Table");
+                    recyclerView = findViewById(R.id.recycler_view_main);
+                    recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,4));
+                    tableNumber = new ArrayList<String>();
+                    databaseTableNumber.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for(DataSnapshot item: dataSnapshot.getChildren()){
+                                //Category category = item.getKey();
+                                if(((boolean) item.child("empty").getValue().equals(false))&&!tableNumber.contains(item.getKey())) {
 
-        recyclerView = findViewById(R.id.recycler_view_main);
-        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,4));
-        tableNumber = new ArrayList<String>();
-        databaseTableNumber.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot item: dataSnapshot.getChildren()){
-                    //Category category = item.getKey();
-                    if(((boolean) item.child("empty").getValue().equals(false))&&!tableNumber.contains(item.getKey())) {
+                                    tableNumber.add(item.getKey());
+                                }
+                                if(((boolean) item.child("empty").getValue().equals(true))&&tableNumber.contains(item.getKey())){
+                                    tableNumber.remove(item.getKey());
+                                }
+                            }
 
-                        tableNumber.add(item.getKey());
-                    }
-                    if(((boolean) item.child("empty").getValue().equals(true))&&tableNumber.contains(item.getKey())){
-                        tableNumber.remove(item.getKey());
-                    }
+                            adapter = new MainRecyclerViewAdapter(MainActivity.this,tableNumber,MainActivity.this);
+
+                            recyclerView.setAdapter(adapter);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
 
-                adapter = new MainRecyclerViewAdapter(MainActivity.this,tableNumber,MainActivity.this);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                recyclerView.setAdapter(adapter);
+                }
+            });
+        }
+        else {
+            ownerUID = FirebaseAuth.getInstance().getUid();
+            navigationView.setNavigationItemSelectedListener(this);
 
-            }
+            databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
+                    .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                    .child("Restaurants").child(restroName).child("Table");
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            recyclerView = findViewById(R.id.recycler_view_main);
+            recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 4));
+            tableNumber = new ArrayList<String>();
+            databaseTableNumber.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+                        //Category category = item.getKey();
+                        if (((boolean) item.child("empty").getValue().equals(false)) && !tableNumber.contains(item.getKey())) {
 
-            }
-        });
+                            tableNumber.add(item.getKey());
+                        }
+                        if (((boolean) item.child("empty").getValue().equals(true)) && tableNumber.contains(item.getKey())) {
+                            tableNumber.remove(item.getKey());
+                        }
+                    }
 
+                    adapter = new MainRecyclerViewAdapter(MainActivity.this, tableNumber, MainActivity.this);
+
+                    recyclerView.setAdapter(adapter);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
 
 
@@ -110,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewOrderActivity.class);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_FLAG",ownerFlag);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });
@@ -134,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         //Toast.makeText(this, table_number, Toast.LENGTH_SHORT).show();
         intent.putExtra("RESTAURANT_NAME",restroName);
         intent.putExtra("TABLE_NUMBER",table_number);
+        intent.putExtra("OWNER_FLAG",ownerFlag);
+        intent.putExtra("OWNER_UID",ownerUID);
         startActivity(intent);
     }
 
@@ -145,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         if(id == R.id.action_settings){
             Intent intent = new Intent(this, SettingActivity.class);
             intent.putExtra("RESTAURANT_NAME",restroName);
+            intent.putExtra("OWNER_UID",ownerUID);
             startActivity(intent);
         }
         else if(id == R.id.action_restaurant){
@@ -166,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements MainRecyclerViewA
         else if(id == R.id.action_employee){
             Intent intent = new Intent(MainActivity.this, EmployeeActivity.class);
             intent.putExtra("RESTAURANT_NAME",restroName);
+            intent.putExtra("OWNER_UID",ownerUID);
             startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer);

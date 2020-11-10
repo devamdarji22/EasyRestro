@@ -30,6 +30,7 @@ public class TaxActivity extends AppCompatActivity {
     Tax vat,serviceTax,serviceCharge;
     DatabaseReference databaseReference;
     String restroName;
+    private String ownerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,9 @@ public class TaxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tax);
 
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
         databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Constant").child("Tax");
         vatCheckBox =findViewById(R.id.vat_check_box);
         serviceTaxCheckBox = findViewById(R.id.service_tax_check_box);

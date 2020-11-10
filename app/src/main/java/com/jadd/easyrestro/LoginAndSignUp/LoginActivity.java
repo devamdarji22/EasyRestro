@@ -57,9 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up_button);
         signUpView = findViewById(R.id.register_text_view);
         auth = FirebaseAuth.getInstance();
-        if(!ownerFlag) {
-            loginRef = FirebaseDatabase.getInstance().getReference("Users").child("Employee").child(FirebaseAuth.getInstance().getUid()).child("assigned");
-        }
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -71,20 +69,25 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else {
+                        loginRef = FirebaseDatabase.getInstance().getReference("Users").child("Employee")
+                                .child(FirebaseAuth.getInstance().getUid()).child("assigned");
 
-                        loginRef.addValueEventListener(new ValueEventListener() {
+                        loginRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                assigned = dataSnapshot.getValue(Boolean.class);
-                                Intent intent;
-                                if(assigned){
-                                    intent = new Intent(LoginActivity.this, EmployeeRestaurantActivity.class);
+                                if(dataSnapshot.getValue(Boolean.class)!=null){
+                                    assigned = dataSnapshot.getValue(Boolean.class);
+                                    Intent intent;
+                                    if(assigned){
+                                        intent = new Intent(LoginActivity.this, EmployeeRestaurantActivity.class);
+                                    }
+                                    else {
+                                        intent = new Intent(LoginActivity.this, EmployeeWaitActivity.class);
+                                    }
+                                    intent.putExtra("OWNER_FLAG",false);
+                                    startActivity(intent);
                                 }
-                                else {
-                                    intent = new Intent(LoginActivity.this, EmployeeWaitActivity.class);
-                                }
-                                intent.putExtra("OWNER_FLAG",false);
-                                startActivity(intent);
+
                             }
 
                             @Override

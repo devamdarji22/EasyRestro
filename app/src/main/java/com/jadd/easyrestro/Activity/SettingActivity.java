@@ -20,12 +20,14 @@ public class SettingActivity extends AppCompatActivity {
     TextView menuText , addCategoryText, addItemText, addTableText,settingTax;
     Context context;
     String restroName;
+    private String ownerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
         context = getApplicationContext();
 
         settingTax = findViewById(R.id.setting_tax);
@@ -39,6 +41,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context , MenuActivity.class);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });
@@ -48,6 +51,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context , TaxActivity.class);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });
@@ -57,6 +61,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context , AddItem.class);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });
@@ -66,6 +71,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context , AddCategory.class);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });
@@ -75,6 +81,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context , AddTable.class);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });

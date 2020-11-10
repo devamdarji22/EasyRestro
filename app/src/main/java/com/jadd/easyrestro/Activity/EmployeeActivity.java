@@ -31,6 +31,7 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeRecyc
     private String restroName;
     private DatabaseReference databaseReference;
     private EmployeeRecyclerViewAdapter restaurantRecyclerViewAdapter;
+    String ownerUID;
 
 
     @Override
@@ -39,16 +40,18 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeRecyc
         setContentView(R.layout.activity_employee);
 
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
         names = new ArrayList<>();
         recyclerView = findViewById(R.id.employee_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(EmployeeActivity.this));
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child("Owner")
-                .child(FirebaseAuth.getInstance().getUid());
+                .child(ownerUID);
 
         databaseReference.child("Restaurants").child(restroName).child("Employee").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                names.clear();
                 for(DataSnapshot item : dataSnapshot.getChildren()){
                     names.add(item.child("name").getValue().toString());
                 }
@@ -70,6 +73,7 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeRecyc
                 Intent intent = new Intent(EmployeeActivity.this, AddEmployeeActivity.class);
                 intent.putExtra("OWNER_FLAG" ,true);
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });

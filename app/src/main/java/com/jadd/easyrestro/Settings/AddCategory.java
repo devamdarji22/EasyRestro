@@ -33,8 +33,9 @@ public class AddCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
 
-        ownerUID = FirebaseAuth.getInstance().getUid();
+
         databaseReference = FirebaseDatabase.getInstance().getReference("Users")
                 .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Category");

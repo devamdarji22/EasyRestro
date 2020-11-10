@@ -43,12 +43,14 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
     Button goButton;
     private String tableNumber;
     String restroName;
+    private String ownerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_add_item);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
         tableNumber = getIntent().getStringExtra("TABLE_NUMBER");
         spinner = findViewById(R.id.category_spinner_add_item_cart);
 
@@ -67,10 +69,10 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
                 category = String.valueOf(spinner.getSelectedItem());
                 databaseReference = FirebaseDatabase.getInstance()
                         .getReference("Users")
-                        .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                        .child("Owner").child(ownerUID)
                         .child("Restaurants").child(restroName).child("Category").child(category).child("Items");
                 databaseAddItemReference = FirebaseDatabase.getInstance().getReference("Users")
-                        .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                        .child("Owner").child(ownerUID)
                         .child("Restaurants").child(restroName).child("Table")
                         .child(tableNumber).child("Cart");
                 databaseReference.addValueEventListener(new ValueEventListener() {
@@ -159,7 +161,7 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
     private void spinnerData() {
 
         dataBase = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Category");
         dataBase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -186,7 +188,7 @@ public class CartAddItemActivity extends AppCompatActivity implements RecyclerVi
     @Override
     public void onQuanClick(int position,int quan) {
         tableNumberReference = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Table")
                 .child(tableNumber).child("Cart");
         String category = items.get(position).getCategory();

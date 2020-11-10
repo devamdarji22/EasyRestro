@@ -29,15 +29,17 @@ public class NewOrderActivity extends AppCompatActivity {
     DatabaseReference databaseTableNumber;
     Button nextButton;
     String restroName;
+    private String ownerUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order);
         restroName = getIntent().getStringExtra("RESTAURANT_NAME");
+        ownerUID = getIntent().getStringExtra("OWNER_UID");
 
         databaseTableNumber = FirebaseDatabase.getInstance().getReference("Users")
-                .child("Owner").child(FirebaseAuth.getInstance().getUid())
+                .child("Owner").child(ownerUID)
                 .child("Restaurants").child(restroName).child("Table");
 
         //nameField = findViewById(R.id.order_name_field);
@@ -60,6 +62,7 @@ public class NewOrderActivity extends AppCompatActivity {
                 intent.putExtra("TABLE_NUMBER",(String)tableNumberSpinner
                         .getSelectedItem());
                 intent.putExtra("RESTAURANT_NAME",restroName);
+                intent.putExtra("OWNER_UID",ownerUID);
                 startActivity(intent);
             }
         });

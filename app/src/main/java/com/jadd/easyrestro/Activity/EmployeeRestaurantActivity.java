@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +39,7 @@ public class EmployeeRestaurantActivity extends AppCompatActivity  implements Re
         restaurantNames = new ArrayList<>();
         recyclerView = findViewById(R.id.employee_restaurant_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(EmployeeRestaurantActivity.this));
-
+        //Toast.makeText(this, "Why ?", Toast.LENGTH_SHORT).show();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child("Employee")
                 .child(FirebaseAuth.getInstance().getUid());
 
