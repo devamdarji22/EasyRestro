@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up_button);
         signUpView = findViewById(R.id.register_text_view);
         auth = FirebaseAuth.getInstance();
-        Toast.makeText(this, String.valueOf(ownerFlag), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, String.valueOf(ownerFlag), Toast.LENGTH_SHORT).show();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -153,6 +153,11 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if(ownerPassword.isEmpty()){
                     passwordField.setError("Please enter Password!");
+                    passwordField.requestFocus();
+                    return;
+                }
+                if(ownerPassword.length()<6){
+                    passwordField.setError("Please enter Password more than 6 Character!");
                     passwordField.requestFocus();
                     return;
                 }
