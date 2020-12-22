@@ -43,6 +43,11 @@ public class AddEmployeeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String id = editText.getText().toString();
+                if(id.isEmpty()){
+                    editText.setError("ID cannot be empty!");
+                    editText.requestFocus();
+                    return;
+                }
                 employeeReference.child(id).child("assigned").setValue(true);
                 getEmployeeReference.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

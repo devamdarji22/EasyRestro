@@ -13,14 +13,12 @@ import com.jadd.easyrestro.R;
 public class FirstActivity extends AppCompatActivity {
 
     TextView owner,employee;
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser()!= null){
-            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
-            //intent.putExtra("OWNER_FLAG",)
-        }
     }
 
     @Override

@@ -57,16 +57,39 @@ public class LoginActivity extends AppCompatActivity {
         signUpButton = findViewById(R.id.sign_up_button);
         signUpView = findViewById(R.id.register_text_view);
         auth = FirebaseAuth.getInstance();
-
+        Toast.makeText(this, String.valueOf(ownerFlag), Toast.LENGTH_SHORT).show();
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
 
                     if(ownerFlag){
-                        Intent intent;
-                        intent = new Intent(LoginActivity.this, RestaurantActivity.class);
-                        startActivity(intent);
+                        loginRef = FirebaseDatabase.getInstance().getReference("Users").child("Owner");
+                        loginRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                boolean a = false;
+                                for(DataSnapshot d : dataSnapshot.getChildren()){
+                                    if(d.getKey().equals(FirebaseAuth.getInstance().getUid())) {
+                                        a = true;
+                                        Intent intent;
+                                        intent = new Intent(LoginActivity.this, RestaurantActivity.class);
+                                        startActivity(intent);
+                                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                if(!a){
+                                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                                    FirebaseAuth.getInstance().signOut();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
                     }
                     else {
                         loginRef = FirebaseDatabase.getInstance().getReference("Users").child("Employee")
@@ -87,7 +110,10 @@ public class LoginActivity extends AppCompatActivity {
                                     intent.putExtra("OWNER_FLAG",false);
                                     startActivity(intent);
                                 }
-
+                                else {
+                                    Toast.makeText(LoginActivity.this, "Login Failed !!!", Toast.LENGTH_SHORT).show();
+                                    FirebaseAuth.getInstance().signOut();
+                                }
                             }
 
                             @Override
@@ -120,8 +146,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ownerName = nameField.getText().toString();
                 ownerPassword = passwordField.getText().toString();
-                if(TextUtils.isEmpty(ownerName)||TextUtils.isEmpty(ownerPassword)){
-                    Toast.makeText(LoginActivity.this, "Enter all fields", Toast.LENGTH_SHORT).show();
+                if(ownerName.isEmpty()){
+                    nameField.setError("Name cannot be empty!");
+                    nameField.requestFocus();
+                    return;
+                }
+                if(ownerPassword.isEmpty()){
+                    passwordField.setError("Please enter Password!");
+                    passwordField.requestFocus();
+                    return;
                 }
                 else {
                     auth.signInWithEmailAndPassword(ownerName, ownerPassword)

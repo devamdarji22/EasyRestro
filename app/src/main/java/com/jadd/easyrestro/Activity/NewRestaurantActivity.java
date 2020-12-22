@@ -33,7 +33,12 @@ public class NewRestaurantActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String restroName = restaurantName.getText().toString();
+                String restroName = restaurantName.getText().toString().trim();
+                if(restroName.isEmpty()){
+                    restaurantName.setError("Restaurant name cannot be empty!");
+                    restaurantName.requestFocus();
+                    return;
+                }
                 if(restroName != null){
                     restaurant = new Restaurant(restroName);
                     databaseReference.child(restroName).setValue(restaurant);
